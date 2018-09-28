@@ -1,0 +1,109 @@
+CLASS ycl_abapgit_object_asfc DEFINITION
+  PUBLIC
+  INHERITING FROM ycl_abapgit_objects_super
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    INTERFACES yif_abapgit_object .
+  PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+
+
+CLASS YCL_ABAPGIT_OBJECT_ASFC IMPLEMENTATION.
+
+
+  METHOD yif_abapgit_object~changed_by.
+    rv_user = ycl_abapgit_objects_super=>c_user_unknown.
+  ENDMETHOD.
+
+
+  METHOD yif_abapgit_object~compare_to_remote_version.
+    CREATE OBJECT ro_comparison_result TYPE ycl_abapgit_comparison_null.
+  ENDMETHOD.
+
+
+  METHOD yif_abapgit_object~delete.
+
+    DATA: lo_generic TYPE REF TO ycl_abapgit_objects_generic.
+
+    CREATE OBJECT lo_generic
+      EXPORTING
+        is_item = ms_item.
+
+    lo_generic->delete( ).
+
+  ENDMETHOD.
+
+
+  METHOD yif_abapgit_object~deserialize.
+
+    DATA: lo_generic TYPE REF TO ycl_abapgit_objects_generic.
+
+    CREATE OBJECT lo_generic
+      EXPORTING
+        is_item = ms_item.
+
+    lo_generic->deserialize(
+      iv_package = iv_package
+      io_xml     = io_xml ).
+
+  ENDMETHOD.
+
+
+  METHOD yif_abapgit_object~exists.
+
+    DATA: lo_generic TYPE REF TO ycl_abapgit_objects_generic.
+
+    CREATE OBJECT lo_generic
+      EXPORTING
+        is_item = ms_item.
+
+    rv_bool = lo_generic->exists( ).
+
+  ENDMETHOD.
+
+
+  METHOD yif_abapgit_object~get_metadata.
+
+    rs_metadata = get_metadata( ).
+    rs_metadata-delete_tadir = abap_true.
+
+  ENDMETHOD.
+
+
+  METHOD yif_abapgit_object~has_changed_since.
+
+    rv_changed = abap_true.
+
+  ENDMETHOD.
+
+
+  METHOD yif_abapgit_object~is_locked.
+
+    rv_is_locked = abap_false.
+
+  ENDMETHOD.
+
+
+  METHOD yif_abapgit_object~jump.
+
+    ycx_abapgit_exception=>raise( |TODO: Jump| ).
+
+  ENDMETHOD.
+
+
+  METHOD yif_abapgit_object~serialize.
+
+    DATA: lo_generic TYPE REF TO ycl_abapgit_objects_generic.
+
+    CREATE OBJECT lo_generic
+      EXPORTING
+        is_item = ms_item.
+
+    lo_generic->serialize( io_xml ).
+
+  ENDMETHOD.
+ENDCLASS.
